@@ -1,13 +1,57 @@
-
+"use client"
 
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import { useState } from "react"
 
 
 export const RightSection = () => {
+
+//useState
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setEmail(e.target.value)
+        } else {
+            setEmail("")
+        }
+    };
+
+    const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setPassword(e.target.value)
+        } else {
+            setPassword("")
+        }
+    };
+
+    const handelLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        // fetch API
+        await fetch(
+            'http://localhost:8080/users/login', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    pasword: password,
+                }),
+            }).then((response) => {
+            console.log(response.json());
+        });
+    };
+
+    console.log({ email: email, password: password });
+
+
+
     return (
         <div className="w-1/2 flex flex-col justify-center">
             <Card className="h-full flex flex-col justify-center px-14 gap-16">
@@ -23,15 +67,19 @@ export const RightSection = () => {
                     type="text"
                     placeholder="exemple@exemple.com"
                     className="py-2 text-lg h-10"
+                    value={email}
+                    onChange={changeEmail}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
                     <Label>password</Label>
                     <Input type="password" placeholder="your password..."
                      className="py-2 text-lg h-10"
+                     value={password}
+                     onChange={changePassword}
                      />
                 </div>   
-                    <Button className="bg-[#13A4EC] rounded-md text-white font-bold py-3 drop-shadow-lg drop-shadow-gray-200">Login</Button>
+                    <Button onClick={handelLogin} className="bg-[#13A4EC] rounded-md text-white font-bold py-3 drop-shadow-lg drop-shadow-gray-200">Login</Button>
                 </div>
                 <div>
                     <span>Don't have an acount yet?</span>
