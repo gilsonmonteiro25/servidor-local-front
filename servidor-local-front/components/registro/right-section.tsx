@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader } from "../ui/card"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { useState } from "react"
+import { toast } from "sonner"
+
 
 export const RightSectionRegistro = () => {
     //useState
@@ -94,20 +96,34 @@ export const RightSectionRegistro = () => {
         const handelRegistro = async (e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             // fetch API
-            await fetch(
-                'http://localhost:8080/users/create', {
+            const response = await fetch( 'http://localhost:8080/users/create', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
+                        nome: nome,
+                        numeroIdentificacao: numeroIdentificacao,
+                        data_nascimento: DataNascimento,
                         email: email,
                         pasword: password,
+                          pais: pais,
+                          localidade: localidade,
+                          telefone: telefone,
+                        role:"cliente",
+                        enabled: true,
                     }),
-                }).then((response) => {
-                console.log(response.json());
-            });
-        };
+              });
+              if (response.status === 200) {
+                toast.success("utilizador criado com sucesso")   
+                
+                if (typeof window !== "undefined") {
+                    window.location.href = "/login";
+                }
+               } else {
+                toast.error("Não foi possivel criar conta,tente novamente.");
+               }
+            };
     
         console.log({ nome: nome, numeroIdentificaco: numeroIdentificacao, dataNascimento: DataNascimento, email: email, password: password, pais: pais, localidade: localidade, telefone: telefone, role: role });
 
@@ -218,13 +234,11 @@ return (
                         />
                     </div>
 
-
-                  
                     <Button onClick={handelRegistro} className="bg-[#13A4EC] rounded-md text-white font-bold py-3 drop-shadow-lg drop-shadow-gray-200">Complete Registration</Button>
                 </div>
                 <div>
                     <span>Don't have an acount yet?</span>
-                    <Link href="/registro"className="text-[#13A4EC] font-semibold">
+                    <Link href="/login"className="text-[#13A4EC] font-semibold">
                     Sing in
                     </Link>
                 </div>
