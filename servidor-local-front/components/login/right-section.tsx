@@ -42,7 +42,7 @@ export const RightSection = () => {
                 },
                 body: JSON.stringify({
                     email: email,
-                    pasword: password,
+                    password: password,
                 }),
             })
         if (response.status === 200) {
@@ -53,7 +53,7 @@ export const RightSection = () => {
                 console.log({"dados recebidos": response})
                 
                 if (typeof window !== "undefined") {
-                   //  window.location.href = "/home";
+                    window.location.href = "/home";
                 }
                } else {
                 toast.error("Não foi possivel criar conta,tente novamente.");
