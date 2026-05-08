@@ -8,5 +8,5 @@ export default function LoginPage() {
      <RightSection/>
         </div>
   
-    );
-}
+    )
+};
