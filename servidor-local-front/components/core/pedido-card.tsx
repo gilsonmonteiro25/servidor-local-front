@@ -1,70 +1,72 @@
-import { Wrench } from "lucide-react";
-import { Card, CardContent } from "../ui/card"
 import Image from "next/image";
-import { Button } from "../ui/button";
 
-export interface CategoriaType {
-    id: string;
-    nome: string;
-    icone: string;
-    
-}
-export interface PedidoCardProps {
-    title: string;
-    description: string;
-    image: string;
-    category: CategoriaType;
-}
-export const PedidoCard = (PedidoCardProps: PedidoCardProps) => {
-    return (
-        <Card className="w-[340px] overflow-hidden rounded-3xl shadow-lg border-0">
-            <div className="relative h-44 w-full">
-                <Image
-                    src={PedidoCardProps.image} 
-                    alt={PedidoCardProps.title}
-                    fill
-                    className="object-cover"
-                />
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
-                {/* Icone */}
-                <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md">
-                    <Wrench className="h-7 w-7 text-blue-500" />
-                </div>
+type CategoryType = {
+  id: string | number;
+  name?: string;
+  nome?: string;
+  icone: string;
+  price?: string;
+};
+
+interface PedidoCardProps {
+  title: string;
+  description: string;
+  image: string;
+  category: CategoryType;
+  text?: string;
+}
+
+export const PedidoCard = ({
+  title,
+  description,
+  image,
+  category,
+  text = "Starting at",
+}: PedidoCardProps) => {
+  const displayPrice = category.price ?? "$89.00";
+
+  return (
+    <Card className="rounded-xl shadow-sm bg-white p-4 py-0">
+      <CardHeader className="p-0 mb-2 relative -mx-4 -mt-0">
+        <div className="h-45 w-full overflow-hidden">
+          <div className="relative h-44 overflow-hidden bg-blue-50">
+            <Image
+              className="object-cover object-top opacity-50"
+              src={image || "/placeholder.png"}
+              alt={title}
+              width={1920}
+              height={1080}
+            />
+          </div>
+
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-white p-3 rounded-full shadow-md text-blue-500">
+              <span className="text-xl">{category.icone}</span>
             </div>
-            <CardContent className="space-y-5 p-6">
-                
-                <div>
-                    <h2 className="text-2xl font-bold">
-                        Emergency Plumbing
-                    </h2>
+          </div>
+        </div>
+      </CardHeader>
 
-                    <p className="mt-2 text-gray-500">
-                        24/7 support for leaks, pipe bursts,
-                        and urgent drainage issues.
-                    </p>
-                </div>
+      <CardContent className="pt-2 px-0">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-xl font-medium text-slate-800">{title}</h3>
+          <p className="text-slate-600 text-sm leading-relaxed">{description}</p>
+        </div>
+      </CardContent>
 
-                
-                <div className="border-t" />
+      <CardFooter className="flex items-center justify-between px-0 pb-4">
+        <h4 className="font-semibold text-lg text-blue-600">
+          <p className="font-semibold text-slate-500 text-sm">{text}</p>
+          {displayPrice}
+        </h4>
 
-                {/* Footer */}
-                <div className="flex items-center justify-between">
-
-                    <div>
-                        <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase">
-                            Starting at
-                        </p>
-
-                        <p className="text-3xl font-bold">
-                            $89.00
-                        </p>
-                    </div>
-
-                    <Button className="rounded-xl bg-blue-500 px-6 py-6 text-white hover:bg-blue-600">
-                        Browse Providers
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
-    )
-}
+        <Button className="bg-blue-500 hover:bg-blue-600 rounded-xl px-6 py-3 font-bold h-auto">
+          Browse Providers
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
